@@ -1,11 +1,14 @@
 package com.bdiegel.ocl.gitjobs.ui;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.transition.Explode;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -52,6 +55,7 @@ public class JobDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mJob = intent.getParcelableExtra(MainActivity.JOB_EXTRA);
         loadData();
+        setupTransition();
     }
 
     private void loadData() {
@@ -95,6 +99,13 @@ public class JobDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW, browseUri);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setupTransition() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setEnterTransition(new Explode());
         }
     }
 
