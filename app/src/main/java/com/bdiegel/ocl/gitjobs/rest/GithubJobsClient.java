@@ -127,7 +127,9 @@ public class GithubJobsClient {
     private GithubJobsService getService() {
 
         if (sService == null) {
-            Gson gson = new GsonBuilder().create();
+            Gson gson = new GsonBuilder()
+                .setDateFormat("EEE MMM dd HH:mm:ss 'UTC' yyyy")
+                .create();
 
             RestAdapter.Builder builder = new RestAdapter.Builder()
                   .setEndpoint(ENDPOINT)

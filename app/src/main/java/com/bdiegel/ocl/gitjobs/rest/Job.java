@@ -2,14 +2,16 @@ package com.bdiegel.ocl.gitjobs.rest;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 
 public class Job {
 
     @SerializedName("id")
     public String id;
 
-//    @SerializedName("created_at")
-//    public Date createdDate;
+    @SerializedName("created_at")
+    public Date createdDate;
 
     @SerializedName("title")
     public String title;
@@ -46,13 +48,13 @@ public class Job {
         this.id = id;
     }
 
-//    public Date getCreatedDate() {
-//        return createdDate;
-//    }
-//
-//    public void setCreatedDate(Date createdDate) {
-//        this.createdDate = createdDate;
-//    }
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public String getTitle() {
         return title;
