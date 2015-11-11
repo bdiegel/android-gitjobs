@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.transition.Explode;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -39,6 +40,9 @@ public class JobDetailActivity extends AppCompatActivity {
     @Bind(R.id.details_job_type) TextView mJobTypeTextView;
 
     @Bind(R.id.details_job_description) WebView mJobDescriptionView;
+
+    MenuItem mShareMenuItem;
+    MenuItem mBrowseMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,28 @@ public class JobDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        mShareMenuItem = menu.findItem(R.id.menu_item_share);
+        mShareMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                shareJobDetails();
+                return true;
+            }
+        });
+        mBrowseMenuItem = menu.findItem(R.id.menu_item_browse);
+        mBrowseMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                launchGithubUrl();
+                return true;
+            }
+        });
+        return true;
+    }
+
     @OnClick(R.id.details_header)
     public void launchCompanyUrl() {
         if (TextUtils.isEmpty(mJob.getCompanyUrl()))
@@ -109,4 +135,24 @@ public class JobDetailActivity extends AppCompatActivity {
         }
     }
 
+    public void launchGithubUrl() {
+        if (TextUtils.isEmpty(mJob.getJobUrl()))
+            return;
+
+        Uri browseUri = Uri.parse(mJob.getJobUrl());
+        Intent intent = new Intent(Intent.ACTION_VIEW, browseUri);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    private void shareJobDetails() {
+        Uri reportUri = Uri.parse(mJob.getJobUrl());
+        Intent shareIntent = new Intent();
+        shareIntent.setType("text/plain");
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, mJob.getTitle() + " @ " + mJob.getCompanyName());
+        shareIntent.putExtra(Intent.EXTRA_TEXT, reportUri.toString());
+        startActivity(Intent.createChooser(shareIntent, getResources().getString(R.string.title_share_action)));
+    }
 }
