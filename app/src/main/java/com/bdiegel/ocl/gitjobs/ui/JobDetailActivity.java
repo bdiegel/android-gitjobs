@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -63,15 +62,13 @@ public class JobDetailActivity extends AppCompatActivity {
         String jobType = !TextUtils.isEmpty(mJob.getType()) ? mJob.getType() : "";
         mJobTypeTextView.setText(jobType);
         mJobDescriptionView.loadData(mJob.getHtmlDescription(), "text/html", "UTF-8");
-
-        if (!TextUtils.isEmpty(mJob.getCompanyLogo())){
-            loadCompanyLogo();
-        } else {
-            mCompanyLogoImageView.setVisibility(View.INVISIBLE);
-        }
+        loadCompanyLogo();
     }
 
     private void loadCompanyLogo() {
+        if (TextUtils.isEmpty(mJob.getCompanyLogo()))
+            return;
+
         Picasso.with(mCompanyLogoImageView.getContext())
               .load(mJob.getCompanyLogo())
               .into(mCompanyLogoImageView);
