@@ -1,0 +1,79 @@
+package com.bdiegel.ocl.gitjobs.ui;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bdiegel.ocl.gitjobs.R;
+import com.bdiegel.ocl.gitjobs.rest.Job;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+/**
+ * Adapter to display jobs in recycler view
+ */
+public class JobRecyclerAdapter extends RecyclerView.Adapter<JobRecyclerAdapter.JobItemViewHolder> {
+
+    static final String TAG = JobRecyclerAdapter.class.getSimpleName();
+
+    ArrayList<Job> data = new ArrayList<>();
+
+    public void setData(List<Job> data) {
+        this.data.clear();
+        this.data.addAll(data);
+        this.notifyDataSetChanged();
+    }
+
+    @Override
+    public JobItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.job_item, parent, false);
+        return new JobItemViewHolder(view);
+    }
+
+
+    @Override
+    public void onBindViewHolder(JobItemViewHolder holder, int position) {
+        Job job = data.get(position);
+        holder.titleTextView.setText(job.getTitle());
+        holder.companyTextView.setText(job.getCompanyName());
+
+        // TODO: load image from network
+//        Picasso.with(holder.logoImageView.getContext())
+//              .load(job.getCompanyLogo())
+//              //.placeholder(R.drawable.logo_placeholder)
+//              //.error(R.drawable.logo_placeholder)
+//              .into(holder.logoImageView);
+    }
+
+    @Override
+    public int getItemCount() {
+        return data.size();
+    }
+
+    class JobItemViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.job_title) TextView titleTextView;
+        @Bind(R.id.company_name) TextView companyTextView;
+        @Bind(R.id.company_logo) ImageView logoImageView;
+
+        public JobItemViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.job_item)
+        public void onClick() {
+            Job job = data.get(getAdapterPosition());
+            // TODO: open details activity
+        }
+    }
+}

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">GitJobs</string>
+    <string name="action_settings">Settings</string>
+    <string name="search_term_hint">enter search term</string>
+    <string name="search_location_hint">enter location</string>
+    <string name="serach_term_default">php</string>
+    <string name="search_location_default">San Francisco, CA</string>
+</resources>
