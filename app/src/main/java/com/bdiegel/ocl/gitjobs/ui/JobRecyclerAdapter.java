@@ -1,6 +1,7 @@
 package com.bdiegel.ocl.gitjobs.ui;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.bdiegel.ocl.gitjobs.R;
 import com.bdiegel.ocl.gitjobs.rest.Job;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +58,11 @@ public class JobRecyclerAdapter extends RecyclerView.Adapter<JobRecyclerAdapter.
         holder.titleTextView.setText(job.getTitle());
         holder.companyTextView.setText(job.getCompanyName());
 
-        // TODO: load image from network
-//        Picasso.with(holder.logoImageView.getContext())
-//              .load(job.getCompanyLogo())
-//              //.placeholder(R.drawable.logo_placeholder)
-//              //.error(R.drawable.logo_placeholder)
-//              .into(holder.logoImageView);
+        if (!TextUtils.isEmpty(job.getCompanyLogo())) {
+            Picasso.with(holder.logoImageView.getContext())
+                  .load(job.getCompanyLogo())
+                  .into(holder.logoImageView);
+        }
     }
 
     @Override

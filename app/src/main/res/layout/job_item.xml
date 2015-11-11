@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/job_item"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:paddingBottom="8dp"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="8dp"
-              android:clickable="true"
-              android:focusable="true"
-              android:background="?attr/selectableItemBackground">
+<RelativeLayout
+    android:id="@+id/job_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingBottom="8dp"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="8dp">
+
 
     <ImageView
         android:id="@+id/company_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_search_white_24dp"
         />
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/job_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/company_logo"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:text="Job Title"
+        />
 
-        <TextView
-            android:id="@+id/job_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            tools:text="Job Title"
-            />
+    <TextView
+        android:id="@+id/company_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_title"
+        android:layout_toRightOf="@+id/company_logo"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="Company Name"/>
 
-        <TextView
-            android:id="@+id/company_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/job_title"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            tools:text="Company Name"/>
+</RelativeLayout>
 
-    </RelativeLayout>
-
-</LinearLayout>
