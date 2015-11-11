@@ -89,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements GithubJobsClient.
     }
 
     private void dismissSoftKeyboard() {
+        mSearchTermTextEdit.clearFocus();
+        mSearchLocationTextEdit.clearFocus();
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mSearchLocationTextEdit.getWindowToken(), 0);
     }
