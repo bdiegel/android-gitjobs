@@ -24,7 +24,17 @@ public class JobRecyclerAdapter extends RecyclerView.Adapter<JobRecyclerAdapter.
 
     static final String TAG = JobRecyclerAdapter.class.getSimpleName();
 
+    JobClickListener mClickListener;
+
     ArrayList<Job> data = new ArrayList<>();
+
+    public interface JobClickListener {
+        public void onJobClick(View view, Job selection);
+    }
+
+    public JobRecyclerAdapter(JobClickListener listener) {
+        mClickListener = listener;
+    }
 
     public void setData(List<Job> data) {
         this.data.clear();
@@ -73,7 +83,7 @@ public class JobRecyclerAdapter extends RecyclerView.Adapter<JobRecyclerAdapter.
         @OnClick(R.id.job_item)
         public void onClick() {
             Job job = data.get(getAdapterPosition());
-            // TODO: open details activity
+            mClickListener.onJobClick(this.itemView, job);
         }
     }
 }
