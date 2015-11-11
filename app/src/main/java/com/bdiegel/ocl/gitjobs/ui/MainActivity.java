@@ -1,6 +1,7 @@
 package com.bdiegel.ocl.gitjobs.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -30,9 +32,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements GithubJobsClient.JobsListener {
+public class MainActivity extends AppCompatActivity implements GithubJobsClient.JobsListener, JobRecyclerAdapter.JobClickListener {
 
     static final String TAG = MainActivity.class.getSimpleName();
+
+    static final String JOB_EXTRA = "gitjobs.intent.extra.JOB";
 
     private GithubJobsClient mGithubJobsClient;
 
@@ -56,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements GithubJobsClient.
 
         mGithubJobsClient = GithubJobsClient.getInstance();
 
-        mAdapter = new JobRecyclerAdapter();
+        mAdapter = new JobRecyclerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
         ArrayList<Job> jobs = new ArrayList<Job>();
@@ -103,10 +107,9 @@ public class MainActivity extends AppCompatActivity implements GithubJobsClient.
     }
 
     public void openDetailActivity(Job job) {
-        //Toast.makeText(this, "Selected: " + record.getPlace().getName(), Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(this, JobDetailActivity.class);
-//        intent.putExtra(JOB, job);
-//        startActivity(intent);
+        Intent intent = new Intent(this, JobDetailActivity.class);
+        intent.putExtra(JOB_EXTRA, job);
+        startActivity(intent);
     }
 
     @Override
@@ -136,5 +139,10 @@ public class MainActivity extends AppCompatActivity implements GithubJobsClient.
     public void error(ApiError error) {
         Log.e(TAG, "API error: " + error.toString());
         Toast.makeText(this, "Jobs API error", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onJobClick(View view, Job selection) {
+        openDetailActivity(selection);
     }
 }

@@ -1,15 +1,20 @@
 package com.bdiegel.ocl.gitjobs.rest;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
 
-public class Job {
+
+public class Job implements Parcelable {
 
     @SerializedName("id")
     public String id;
 
-//    @SerializedName("created_at")
-//    public Date createdDate;
+    @SerializedName("created_at")
+    public Date createdDate;
 
     @SerializedName("title")
     public String title;
@@ -46,13 +51,13 @@ public class Job {
         this.id = id;
     }
 
-//    public Date getCreatedDate() {
-//        return createdDate;
-//    }
-//
-//    public void setCreatedDate(Date createdDate) {
-//        this.createdDate = createdDate;
-//    }
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public String getTitle() {
         return title;
@@ -125,4 +130,52 @@ public class Job {
     public void setJobUrl(String jobUrl) {
         this.jobUrl = jobUrl;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeLong(createdDate != null ? createdDate.getTime() : -1);
+        dest.writeString(this.title);
+        dest.writeString(this.location);
+        dest.writeString(this.type);
+        dest.writeString(this.htmlDescription);
+        dest.writeString(this.applyUrl);
+        dest.writeString(this.companyName);
+        dest.writeString(this.companyUrl);
+        dest.writeString(this.companyLogo);
+        dest.writeString(this.jobUrl);
+    }
+
+    public Job() {
+    }
+
+    protected Job(Parcel in) {
+        this.id = in.readString();
+        long tmpCreatedDate = in.readLong();
+        this.createdDate = tmpCreatedDate == -1 ? null : new Date(tmpCreatedDate);
+        this.title = in.readString();
+        this.location = in.readString();
+        this.type = in.readString();
+        this.htmlDescription = in.readString();
+        this.applyUrl = in.readString();
+        this.companyName = in.readString();
+        this.companyUrl = in.readString();
+        this.companyLogo = in.readString();
+        this.jobUrl = in.readString();
+    }
+
+    public static final Parcelable.Creator<Job> CREATOR = new Parcelable.Creator<Job>() {
+        public Job createFromParcel(Parcel source) {
+            return new Job(source);
+        }
+
+        public Job[] newArray(int size) {
+            return new Job[size];
+        }
+    };
 }
