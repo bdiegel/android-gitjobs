@@ -6,4 +6,6 @@
     <string name="serach_term_default">php</string>
     <string name="search_location_default">San Francisco, CA</string>
     <string name="title_activity_job_detail">JobDetailActivity</string>
+    <string name="transition_logo">transition_logo</string>
+    <string name="title_share_action">Share job posting</string>
 </resources>

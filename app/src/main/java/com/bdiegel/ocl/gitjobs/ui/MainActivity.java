@@ -3,6 +3,7 @@ package com.bdiegel.ocl.gitjobs.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements GithubJobsClient.
     }
 
     private void dismissSoftKeyboard() {
+        mSearchTermTextEdit.clearFocus();
+        mSearchLocationTextEdit.clearFocus();
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mSearchLocationTextEdit.getWindowToken(), 0);
     }
@@ -106,10 +110,12 @@ public class MainActivity extends AppCompatActivity implements GithubJobsClient.
         mGithubJobsClient.findPositionsByLocation(searchTerm, searchLocation, this);
     }
 
-    public void openDetailActivity(Job job) {
+    public void openDetailActivity(ImageView sharedElement, Job job) {
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+              makeSceneTransitionAnimation(this, sharedElement, getResources().getString(R.string.transition_logo));
         Intent intent = new Intent(this, JobDetailActivity.class);
         intent.putExtra(JOB_EXTRA, job);
-        startActivity(intent);
+        startActivity(intent, options.toBundle());
     }
 
     @Override
@@ -143,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements GithubJobsClient.
 
     @Override
     public void onJobClick(View view, Job selection) {
-        openDetailActivity(selection);
+        ImageView imageView = (ImageView) view.findViewById(R.id.company_logo);
+        openDetailActivity(imageView, selection);
     }
 }
