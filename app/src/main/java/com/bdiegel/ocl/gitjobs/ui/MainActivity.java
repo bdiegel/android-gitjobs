@@ -135,8 +135,9 @@ public class MainActivity extends AppCompatActivity implements GithubJobsClient.
 
     @Override
     public void success(List<Job> jobs) {
-        if (jobs == null || jobs.isEmpty())
-            return;
+        if (jobs == null || jobs.isEmpty()) {
+            Toast.makeText(this, "No jobs found for search", Toast.LENGTH_LONG).show();
+        }
 
         mAdapter.setData(jobs);
     }
