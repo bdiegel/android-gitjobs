@@ -1,4 +1,4 @@
-package com.bdiegel.ocl.gitjobs.ui;
+package com.honu.gitjobs.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;

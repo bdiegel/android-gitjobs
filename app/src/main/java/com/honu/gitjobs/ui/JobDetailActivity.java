@@ -1,4 +1,4 @@
-package com.bdiegel.ocl.gitjobs.ui;
+package com.honu.gitjobs.ui;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -15,8 +15,8 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bdiegel.ocl.gitjobs.R;
-import com.bdiegel.ocl.gitjobs.rest.Job;
+import com.honu.gitjobs.R;
+import com.honu.gitjobs.rest.Job;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;

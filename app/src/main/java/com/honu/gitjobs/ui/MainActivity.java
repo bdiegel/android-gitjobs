@@ -1,4 +1,4 @@
-package com.bdiegel.ocl.gitjobs.ui;
+package com.honu.gitjobs.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,10 +20,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bdiegel.ocl.gitjobs.R;
-import com.bdiegel.ocl.gitjobs.rest.ApiError;
-import com.bdiegel.ocl.gitjobs.rest.GithubJobsClient;
-import com.bdiegel.ocl.gitjobs.rest.Job;
+import com.honu.gitjobs.R;
+import com.honu.gitjobs.rest.ApiError;
+import com.honu.gitjobs.rest.GithubJobsClient;
+import com.honu.gitjobs.rest.Job;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
