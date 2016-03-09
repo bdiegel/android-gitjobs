@@ -1,4 +1,4 @@
-package com.bdiegel.ocl.gitjobs.rest;
+package com.honu.gitjobs.rest;
 
 import android.os.Parcel;
 import android.os.Parcelable;

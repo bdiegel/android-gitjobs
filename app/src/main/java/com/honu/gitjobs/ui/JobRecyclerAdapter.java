@@ -1,4 +1,4 @@
-package com.bdiegel.ocl.gitjobs.ui;
+package com.honu.gitjobs.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bdiegel.ocl.gitjobs.R;
-import com.bdiegel.ocl.gitjobs.rest.Job;
+import com.honu.gitjobs.R;
+import com.honu.gitjobs.rest.Job;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

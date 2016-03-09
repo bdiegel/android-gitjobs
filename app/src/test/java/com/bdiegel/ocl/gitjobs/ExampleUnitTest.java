@@ -1,4 +1,4 @@
-package com.bdiegel.ocl.gitjobs;
+package com.honu.gitjobs;
 
 import org.junit.Test;
 
