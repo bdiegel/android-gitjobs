@@ -42,7 +42,7 @@
                     android:hint="@string/search_term_hint"
                     android:lines="1"
                     android:singleLine="true"
-                    android:text="@string/serach_term_default"
+                    android:text="@string/search_term_default"
                     android:theme="@style/AppTheme.EditText"
                     />
 
