@@ -1,4 +1,4 @@
-package com.honu.gitjobs.ui;
+package com.honu.gitjobs.ui.detail;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;

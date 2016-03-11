@@ -1,4 +1,4 @@
-package com.honu.gitjobs.ui;
+package com.honu.gitjobs.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,26 +21,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.honu.gitjobs.R;
-import com.honu.gitjobs.rest.ApiError;
-import com.honu.gitjobs.rest.GithubJobsClient;
 import com.honu.gitjobs.rest.Job;
+import com.honu.gitjobs.ui.decorator.DividerItemDecoration;
+import com.honu.gitjobs.ui.detail.JobDetailActivity;
+import com.honu.gitjobs.ui.detail.JobRecyclerAdapter;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements GithubJobsClient.JobsListener, JobRecyclerAdapter.JobClickListener {
+public class MainActivity extends AppCompatActivity implements MainMvpView,
+      JobRecyclerAdapter.JobClickListener {
 
     static final String TAG = MainActivity.class.getSimpleName();
 
-    static final String JOB_EXTRA = "gitjobs.intent.extra.JOB";
-
-    private GithubJobsClient mGithubJobsClient;
+    private MainMvpPresenter mMainMvpPresenter;
 
     JobRecyclerAdapter mAdapter;
 
@@ -60,19 +60,24 @@ public class MainActivity extends AppCompatActivity implements GithubJobsClient.
 
         setSupportActionBar(mToolbar);
 
-        mGithubJobsClient = GithubJobsClient.getInstance();
-
         mAdapter = new JobRecyclerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
-        ArrayList<Job> jobs = new ArrayList<Job>();
-        mAdapter.setData(jobs);
+        mAdapter.setData(Collections.<Job>emptyList());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
-        mRecyclerView.addItemDecoration(itemDecoration);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+
+        mMainMvpPresenter = new MainMvpPresenter();
+        mMainMvpPresenter.attachView(this);
+        loadJobs();
 
         addListeners();
-        loadJobs();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMainMvpPresenter.detachView();
     }
 
     private void addListeners() {
@@ -107,15 +112,7 @@ public class MainActivity extends AppCompatActivity implements GithubJobsClient.
             Toast.makeText(this, "Invalid search location", Toast.LENGTH_SHORT).show();
         }
 
-        mGithubJobsClient.findPositionsByLocation(searchTerm, searchLocation, this);
-    }
-
-    public void openDetailActivity(ImageView sharedElement, Job job) {
-        ActivityOptionsCompat options = ActivityOptionsCompat.
-              makeSceneTransitionAnimation(this, sharedElement, getResources().getString(R.string.transition_logo));
-        Intent intent = new Intent(this, JobDetailActivity.class);
-        intent.putExtra(JOB_EXTRA, job);
-        startActivity(intent, options.toBundle());
+        mMainMvpPresenter.loadJobs(searchTerm, searchLocation);
     }
 
     @Override
@@ -134,23 +131,31 @@ public class MainActivity extends AppCompatActivity implements GithubJobsClient.
     }
 
     @Override
-    public void success(List<Job> jobs) {
-        if (jobs == null || jobs.isEmpty()) {
-            Toast.makeText(this, "No jobs found for search", Toast.LENGTH_LONG).show();
-        }
+    public void onJobClick(View view, Job selection) {
+        ImageView imageView = (ImageView) view.findViewById(R.id.company_logo);
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+              makeSceneTransitionAnimation(this, imageView, getResources().getString(R.string.transition_logo));
+        Intent intent = JobDetailActivity.newStartIntent(this, selection);
+        startActivity(intent, options.toBundle());
+    }
 
+    /** MainMvpView **/
+
+    @Override
+    public void showJobs(List<Job> jobs) {
         mAdapter.setData(jobs);
     }
 
     @Override
-    public void error(ApiError error) {
-        Log.e(TAG, "API error: " + error.toString());
-        Toast.makeText(this, "Jobs API error", Toast.LENGTH_SHORT).show();
+    public void showJobsEmpty() {
+        mAdapter.setData(Collections.<Job>emptyList());
+        mAdapter.notifyDataSetChanged();
+        Toast.makeText(this, "No jobs found for search", Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onJobClick(View view, Job selection) {
-        ImageView imageView = (ImageView) view.findViewById(R.id.company_logo);
-        openDetailActivity(imageView, selection);
+    public void showError(String error) {
+        Log.e(TAG, "API error: " + error);
+        Toast.makeText(this, "Jobs API error", Toast.LENGTH_SHORT).show();
     }
 }

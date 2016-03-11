@@ -1,4 +1,4 @@
-package com.honu.gitjobs.ui;
+package com.honu.gitjobs.ui.decorator;
 
 import android.content.Context;
 import android.content.res.TypedArray;

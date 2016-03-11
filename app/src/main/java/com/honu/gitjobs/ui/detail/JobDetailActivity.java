@@ -1,6 +1,7 @@
-package com.honu.gitjobs.ui;
+package com.honu.gitjobs.ui.detail;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -27,6 +28,8 @@ public class JobDetailActivity extends AppCompatActivity {
 
     Job mJob;
 
+    private static final String JOB_EXTRA = "gitjobs.intent.extra.JOB";
+
     @Bind(R.id.details_company_name) TextView mCompanyNameTextView;
 
     @Bind(R.id.details_company_location) TextView mCompanyLocationTextView;
@@ -44,6 +47,12 @@ public class JobDetailActivity extends AppCompatActivity {
     MenuItem mShareMenuItem;
     MenuItem mBrowseMenuItem;
 
+    public static Intent newStartIntent(Context context, Job job) {
+        Intent intent = new Intent(context, JobDetailActivity.class);
+        intent.putExtra(JOB_EXTRA, job);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,28 +66,28 @@ public class JobDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Intent intent = getIntent();
-        mJob = intent.getParcelableExtra(MainActivity.JOB_EXTRA);
-        loadData();
+        mJob = intent.getParcelableExtra(JOB_EXTRA);
+        showJob(mJob);
         setupTransition();
     }
 
-    private void loadData() {
-        mCompanyNameTextView.setText(mJob.getCompanyName());
-        mCompanyLocationTextView.setText(mJob.getLocation());
-        mCompanyUrlTextView.setText(mJob.getCompanyUrl());
-        mJobTitleTextView.setText(mJob.getTitle());
-        String jobType = !TextUtils.isEmpty(mJob.getType()) ? mJob.getType() : "";
+    private void showJob(Job job) {
+        mCompanyNameTextView.setText(job.getCompanyName());
+        mCompanyLocationTextView.setText(job.getLocation());
+        mCompanyUrlTextView.setText(job.getCompanyUrl());
+        mJobTitleTextView.setText(job.getTitle());
+        String jobType = !TextUtils.isEmpty(job.getType()) ? job.getType() : "";
         mJobTypeTextView.setText(jobType);
-        mJobDescriptionView.loadData(mJob.getHtmlDescription(), "text/html", "UTF-8");
-        loadCompanyLogo();
+        mJobDescriptionView.loadData(job.getHtmlDescription(), "text/html", "UTF-8");
+        loadCompanyLogo(job);
     }
 
-    private void loadCompanyLogo() {
-        if (TextUtils.isEmpty(mJob.getCompanyLogo()))
+    private void loadCompanyLogo(Job job) {
+        if (TextUtils.isEmpty(job.getCompanyLogo()))
             return;
 
         Picasso.with(mCompanyLogoImageView.getContext())
-              .load(mJob.getCompanyLogo())
+              .load(job.getCompanyLogo())
               .into(mCompanyLogoImageView);
     }
 
